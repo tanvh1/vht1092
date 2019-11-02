@@ -1,90 +1,169 @@
-<div id='bodybox'>
-  <div id='chatborder'>
-    <p id="chatlog7" class="chatlog">&nbsp;</p>
-    <p id="chatlog6" class="chatlog">&nbsp;</p>
-    <p id="chatlog5" class="chatlog">&nbsp;</p>
-    <p id="chatlog4" class="chatlog">&nbsp;</p>
-    <p id="chatlog3" class="chatlog">&nbsp;</p>
-    <p id="chatlog2" class="chatlog">&nbsp;</p>
-    <p id="chatlog1" class="chatlog">&nbsp;</p>
-    <input type="text" name="chat" id="chatbox" placeholder="Hi there! Type here to talk to me." onfocus="placeHolder()">
-  </div>
-  <br>
-  <br>
-  <h2>Build a Chatbot</h2>
-  <p>Write a program that responds to the user's text input.</p>
-  <ul style="list-style-type:disc">
-    <li>Input strings of text from the user.</li>
-    <li>Output different strings of text in response.</li>
-    <li>Here is my attempt:  <a href="https://codepen.io/lilgreenland/pen/zqXLeJ">notbot</a>
-  </ul>
-  <br>
-  <h3><p>How to Use This Template!</p></h3>
-  <p>Fork this template!</p>
-  <p>The template has several functions that allow you to focus on programming the chatbot's behavoir. It will read in the user's strings from the input box. It will keep a record of every message and display the last few messages above the input box.</p>
-  <p>To control what the chatbot will say make changes to the javascript function <b>chatbotResponse()</b> . You can also change the HTML or CSS. There is no need to keep these directions.</p>
-  <p>The variable <b>lastUserMessage</b> is a string that records the last thing typed.</p>
-  <p>The variable <b>botMessage</b> is a string that controls what the chatbot will say.</p>
-  <p>Example:</p>
-  <pre><code>if (lastUserMessage === 'hi'){
-  botMessage = 'Howdy!';
-}</pre></code>
-  <pre><code>if (lastUserMessage === 'what is your name'){
-  botMessage = 'My name is' + botName;
-}</pre></code>
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chatbot</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+        <style type="text/css">
+        .fixed-panel {
+            min-height: 400px;
+            max-height: 400px;
+            background-color: #19313c;
+            color: white;
+            overflow: auto;
+        }
+        .media-list {
+            overflow: auto;
+            clear: both;
+            display: table;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: normal;
+            line-break: strict;
+        }
+        .panel {
+            margin-bottom: 20px;
+            background-color: #fff;
+            border: 6px solid transparent;
+            border-radius: 25px;
+            -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+            box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        }
+        .panel-info {
+            border-color: #0c2735;
+        }
+        .panel-info>.panel-heading {
+            color: white;
+            background-color: #0c2735;
+            border-color: #0c2735;
+        }
+        .panel-footer {
+            padding: 10px 15px;
+            background-color: #0c2735;
+            border-top: 1px solid #0c2735;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px
+        }
+        body {
+            background: rgb(96,143,149); /* Old browsers */
+            background: -moz-linear-gradient(-45deg, rgba(96,143,149,1) 0%, rgba(0,133,136,1) 9%, rgba(12,36,73,1) 52%, rgba(26,30,59,1) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(-45deg, rgba(96,143,149,1) 0%,rgba(0,133,136,1) 9%,rgba(12,36,73,1) 52%,rgba(26,30,59,1) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(135deg, rgba(96,143,149,1) 0%,rgba(0,133,136,1) 9%,rgba(12,36,73,1) 52%,rgba(26,30,59,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#608f95', endColorstr='#1a1e3b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container background-color: rgb(255,0,255);">
+            <div class="row">
+                <h3 class="text-center"><small><strong>Artificial</strong></small><font color="white"> Intelligence!!! </font><small><strong>Here</strong></small><font color="white"> I am..</font></h3>
+                ​
+                <div class="col-md-4 col-md-offset-4">
+                    <div id="chatPanel" class="panel panel-info">
+                        <div class="panel-heading">
+                            <strong><span class="glyphicon glyphicon-globe"></span> Talk with Me !!! (You: Green / Bot: White) </strong>
+                        </div>
+                        <div class="panel-body fixed-panel">
+                            <ul class="media-list">
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <form method="post" id="chatbot-form">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter Message" name="messageText" id="messageText" autofocus/>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-info" type="button" id="chatbot-form-btn">Send</button>
+                                        <button class="btn btn-info" type="button" id="chatbot-form-btn-clear">Clear</button>
+                                        <button class="btn btn-info" type="button" id="chatbot-form-btn-voice">Voice</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script>
+            var exports = {};
+        </script>
+        <script src="https://unpkg.com/speech-to-text@0.7.4/lib/index.js"></script>
+        <script>
+        $(function() {
+            var synth = window.speechSynthesis;
 
+            var msg = new SpeechSynthesisUtterance();
+            var voices = synth.getVoices();
+            msg.voice = voices[0];
+            msg.rate = 1;
+            msg.pitch = 1;
 
-  <br>
-  <br>
-  <h3><p>Ideas</p></h3>
-  <p>Narrow the range of topics the chatbot responds to, like an adventure time chatbot.</p>
-  <p>Customize the html and CSS to fit your theme.</p>
-  <p>If you only have a few responses, tell the user what commands work.</p>
-  <p>Use a <a href="https://www.w3schools.com/js/js_switch.asp">switch statement</a> to simplify a large number of if else branches.</p>
+            $('#chatbot-form-btn').click(function(e) {
+                e.preventDefault();
+                $('#chatbot-form').submit();
+            });
+            $('#chatbot-form-btn-clear').click(function(e) {
+                e.preventDefault();
+                $('#chatPanel').find('.media-list').html('');
+            });
+            $('#chatbot-form-btn-voice').click(function(e) {
+                e.preventDefault();
 
-  <br>
-  <br>
-  <h3><p>Advanced Ideas</p></h3>
-  <p>Use the <a href="https://www.w3schools.com/jsref/jsref_tolowercase.asp">.tolowercase()</a> command to ignore capitalization.</p>
-  <p>Make variables to keep track of what's been said. Use those variables in an If stement to produce a new set of responses.</p>
+                var onAnythingSaid = function (text) {
+                    console.log('Interim text: ', text);
+                };
+                var onFinalised = function (text) {
+                    console.log('Finalised text: ', text);
+                    $('#messageText').val(text);
+                };
+                var onFinishedListening = function () {
+                    // $('#chatbot-form-btn').click();
+                };
 
-  <p>Respond to the users by using what they said. For example:</p>
-  <pre><b>User:</b> I like puppies
-<b>Chatbot:</b> Tell me more about puppies.</pre>
+                try {
+                    var listener = new SpeechToText(onAnythingSaid, onFinalised, onFinishedListening);
+                    listener.startListening();
 
-  <p>Use the <a href="https://www.w3schools.com/jsref/jsref_obj_date.asp">date</a> function to answer questions like "what time is it?".</p>
-  <p>Quizbot?</p>
-  <p>Calculator Mathbot?</p>
-  <p>Canvas drawbot!</p>
-  <p>Write a text adventure game. Like <a href="http://www.web-adventures.org/">these</a>.</p>
-  <p>Build an array with several similar responses and have the chatbot pick one at random, like this:
-    <pre><code>var hi = ['hi','howdy','hello','hey'];
-botMessage = hi[Math.floor(Math.random()*(hi.length))];</pre></code></p>
-  <p>Use <a href="https://www.w3schools.com/js/js_regexp.asp">regular expressions</a> for powerful searches.  Here is my <a href="https://codepen.io/lilgreenland/pen/YGENqK?editors=0010">example</a></p>
+                    setTimeout(function () {
+                        listener.stopListening();
+                        if ($('#messageText').val()) {
+                            $('#chatbot-form-btn').click();
+                        }
+                    }, 5000);
+                } catch (error) {
+                    console.log(error);
+                }
+            });
 
-  <p>Regular expressions can search in a way similar to a google search. This example searches for words that are cat-like. It also ignores capitalization and looks for the words preceded and followed by spaces.</p>
-  <pre><code>var n = lastUserMessage.search(/\b(cat|cats|kitten|feline)\b/i);
-if (n !== -1) {
-  botMessage = 'I hate cats!';
-} </pre></code>
+            $('#chatbot-form').submit(function(e) {
+                e.preventDefault();
+                var message = $('#messageText').val();
+                $(".media-list").append('<li class="media"><div class="media-body"><div class="media"><div style = "text-align:right; color : #2EFE2E" class="media-body">' + message + '<hr/></div></div></div></li>');
 
-  <p>Here is an example that looks for ways to say dog as singular or plural. It then repeats back the dog related word to the user.</p>
-  <pre><code>var patt = /\b(dogs?|pup(s|py|pies?)?|canines?)\b/i;
-var result = patt.exec(lastUserMessage);
-if (result) {
-  botMessage = 'I love ' + result[0];
-} </pre></code>
-  <br>
-  <br>
-  <h3><p>Links:</p></h3>
-  <ul style="list-style-type:disc">
-    <li><a href="https://www.w3schools.com/js/js_strings.asp">tutorial on strings</a></li>
-    <li><a href="https://www.w3schools.com/js/js_string_methods.asp">string methods</a></li>
-    <li><a href="https://www.w3schools.com/jsref/jsref_obj_string.asp">string reference</a></li>
-    <li><a href="https://www.w3schools.com/js/js_regexp.asp">regular expressions tutorial</a></li>
-    <li><a href="https://www.w3schools.com/jsref/jsref_obj_regexp.asp">W3 schools regular expressions reference</a></li>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">MDN regular expressions reference</a></li>
-    <li><a href="http://regexr.com/">Testing your regular expressions</a></li>
-  </ul>
-  <center><img src="https://lilgreenland.github.io/images/BMO.jpg" align="middle"></center>
-</div>
+                $.ajax({
+                    type: "POST",
+                    url: "/ask",
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#messageText').val('');
+                        var answer = response.answer;
+                        const chatPanel = document.getElementById("chatPanel");
+                        $(".media-list").append('<li class="media"><div class="media-body"><div class="media"><div style = "color : white" class="media-body">' + answer + '<hr/></div></div></div></li>');
+                        $(".fixed-panel").stop().animate({ scrollTop: $(".fixed-panel")[0].scrollHeight}, 1000);
+                        
+                        msg.text = answer;
+                        speechSynthesis.speak(msg);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+        </script>
+    </body>
+</html>
